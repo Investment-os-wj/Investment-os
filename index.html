@@ -698,6 +698,163 @@ window.addEventListener(
 );
 
 /* ===== V1.4 END ===== */
+ /* ===== Investment OS V1.5 · 买点监控 ===== */
+
+const BUY_ZONES = {
+  SPCX: { watch: 115, buy: 105 },
+  AVEX: { watch: 21, buy: 19 },
+  RDW:  { watch: 11, buy: 9.5 },
+  USAR: { watch: 14, buy: 12 },
+  MP:   { watch: 42, buy: 36 }
+};
+
+function getBuySignal(symbol, price){
+
+  const zone = BUY_ZONES[symbol];
+
+  if(!zone || !price){
+    return {
+      text:'暂无判断',
+      color:'muted'
+    };
+  }
+
+  if(price <= zone.buy){
+    return {
+      text:'● 进入买点',
+      color:'green'
+    };
+  }
+
+  if(price <= zone.watch){
+    return {
+      text:'● 接近买点',
+      color:'yellow'
+    };
+  }
+
+  return {
+    text:'● 等待',
+    color:'muted'
+  };
+}
+
+
+function createBuyMonitor(){
+
+  if(document.getElementById('buyMonitorPanel')){
+    return;
+  }
+
+  const panel = document.createElement('div');
+
+  panel.id = 'buyMonitorPanel';
+  panel.className = 'card';
+
+  panel.innerHTML = `
+    <h2>买点监控</h2>
+
+    <div class="small muted"
+         style="margin-bottom:12px;">
+      当前观察区间 · 非自动交易
+    </div>
+
+    ${LIVE_SYMBOLS.map(symbol => {
+
+      const zone = BUY_ZONES[symbol];
+
+      return `
+        <div class="row">
+          <span>
+            ${symbol}
+            <div class="small muted">
+              观察 $${zone.watch}
+              · 买点 $${zone.buy}
+            </div>
+          </span>
+
+          <span
+            class="right muted"
+            id="signal_${symbol}">
+            等待行情
+          </span>
+        </div>
+      `;
+
+    }).join('')}
+  `;
+
+  const livePanel =
+    document.getElementById('liveMarketPanel');
+
+  if(livePanel){
+    livePanel.insertAdjacentElement(
+      'afterend',
+      panel
+    );
+  }
+}
+
+
+function updateBuySignal(symbol, price){
+
+  const target =
+    document.getElementById(
+      'signal_' + symbol
+    );
+
+  if(!target){
+    return;
+  }
+
+  const signal =
+    getBuySignal(symbol, price);
+
+  target.innerText =
+    signal.text;
+
+  target.className =
+    'right ' + signal.color;
+}
+
+
+/* 接管 V1.4 行情函数 */
+const originalGetLiveQuote =
+  getLiveQuote;
+
+getLiveQuote =
+  async function(symbol){
+
+    const result =
+      await originalGetLiveQuote(symbol);
+
+    setTimeout(
+      function(){
+        updateBuySignal(
+          symbol,
+          result.price
+        );
+      },
+      0
+    );
+
+    return result;
+  };
+
+
+window.addEventListener(
+  'load',
+  function(){
+
+    setTimeout(
+      createBuyMonitor,
+      100
+    );
+
+  }
+);
+
+/* ===== V1.5 END ===== */
 </script>
 
 </body>
