@@ -5,73 +5,126 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Investment OS">
+<meta name="theme-color" content="#0b1020">
 
 <title>Investment OS</title>
 
 <style>
 *{box-sizing:border-box}
+html{background:#0b1020}
 body{
-  margin:0;
-  background:#0b1020;
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ margin:0;
+ background:#0b1020;
+ color:#fff;
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 .container{
-  max-width:600px;
-  margin:auto;
-  padding:28px 20px 110px;
+ max-width:620px;
+ margin:auto;
+ padding:calc(26px + env(safe-area-inset-top)) 20px 115px;
 }
 h1{
-  font-size:32px;
-  margin:20px 0 4px;
+ font-size:34px;
+ margin:12px 0 4px;
+ letter-spacing:-1px;
 }
 .subtitle{
-  color:#8d96ad;
-  font-size:16px;
-  margin-bottom:28px;
+ color:#8d96ad;
+ font-size:15px;
+ margin-bottom:26px;
 }
 .card{
-  background:#151b30;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:16px;
+ background:#151b30;
+ border-radius:20px;
+ padding:20px;
+ margin-bottom:16px;
 }
 .card h2{
-  margin:0 0 16px;
-  font-size:20px;
+ margin:0 0 16px;
+ font-size:21px;
 }
 .row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:13px 0;
-  border-bottom:1px solid #2a324c;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+ padding:13px 0;
+ border-bottom:1px solid #2a324c;
 }
 .row:last-child{border-bottom:none}
 .right{
-  font-weight:600;
-  text-align:right;
+ font-weight:600;
+ text-align:right;
 }
 .green{color:#66d895}
 .yellow{color:#ffd166}
 .red{color:#ff7070}
+.blue{color:#79a7ff}
 .muted{color:#929bb1}
 .small{font-size:13px}
-
-.nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  background:#10162a;
-  border-top:1px solid #28304a;
-  display:flex;
-  justify-content:space-around;
-  padding:13px 4px calc(13px + env(safe-area-inset-bottom));
-  color:#8e97ad;
-  font-size:13px;
+.price{
+ font-size:20px;
+ font-weight:700;
 }
+.badge{
+ padding:5px 9px;
+ border-radius:9px;
+ background:#222b48;
+ font-size:12px;
+}
+.action{
+ background:#202944;
+ border-radius:14px;
+ padding:14px;
+ margin-top:10px;
+}
+button{
+ border:0;
+ border-radius:12px;
+ padding:11px 15px;
+ background:#2b64f6;
+ color:white;
+ font-size:14px;
+ font-weight:600;
+}
+button.secondary{background:#252d48}
+.nav{
+ position:fixed;
+ left:0;
+ right:0;
+ bottom:0;
+ background:#10162a;
+ border-top:1px solid #28304a;
+ display:flex;
+ justify-content:space-around;
+ padding:12px 3px calc(12px + env(safe-area-inset-bottom));
+ color:#8e97ad;
+ font-size:13px;
+ z-index:10;
+}
+.nav div{cursor:pointer}
 .nav .active{color:#fff}
+.page{display:none}
+.page.active{display:block}
+input{
+ width:100%;
+ border:1px solid #313b59;
+ background:#10162a;
+ color:white;
+ border-radius:12px;
+ padding:12px;
+ font-size:15px;
+ margin-top:8px;
+}
+.notice{
+ padding:12px;
+ border-radius:12px;
+ background:#1d2540;
+ color:#adb6cc;
+ font-size:13px;
+ line-height:1.5;
+}
 </style>
 </head>
 
@@ -79,8 +132,10 @@ h1{
 
 <div class="container">
 
+<div id="overview" class="page active">
+
 <h1>Investment OS</h1>
-<div class="subtitle">Personal Investment Command Center · V1.2</div>
+<div class="subtitle">Personal Investment Command Center · V1.3</div>
 
 <div class="card">
 <h2>今日状态</h2>
@@ -100,15 +155,18 @@ h1{
 <span class="right green">● ONLINE</span>
 </div>
 
+<div class="row">
+<span>数据模式</span>
+<span class="right blue">行情模块准备中</span>
 </div>
-
+</div>
 
 <div class="card">
 <h2>核心关注</h2>
 
 <div class="row">
 <span>SPCX</span>
-<span class="right">等待合理买点</span>
+<span class="right yellow">等待合理买点</span>
 </div>
 
 <div class="row">
@@ -123,16 +181,14 @@ h1{
 
 <div class="row">
 <span>USAR</span>
-<span class="right">财报跟踪</span>
+<span class="right">财报 / 事件跟踪</span>
 </div>
 
 <div class="row">
 <span>MP</span>
 <span class="right">稀土核心</span>
 </div>
-
 </div>
-
 
 <div class="card">
 <h2>风险仪表盘</h2>
@@ -156,9 +212,7 @@ h1{
 <span>SOX</span>
 <span class="right yellow">● 待接实时数据</span>
 </div>
-
 </div>
-
 
 <div class="card">
 <h2>贵金属</h2>
@@ -172,9 +226,7 @@ h1{
 <span>白银</span>
 <span class="right">趋势判断待更新</span>
 </div>
-
 </div>
-
 
 <div class="card">
 <h2>Crypto</h2>
@@ -193,21 +245,177 @@ h1{
 <span>UNI</span>
 <span class="right">成本约 $12</span>
 </div>
+</div>
 
 </div>
 
+
+<div id="holdings" class="page">
+
+<h1>持仓</h1>
+<div class="subtitle">Portfolio Monitor</div>
 
 <div class="card">
-<h2>系统说明</h2>
+<h2>美股核心组合</h2>
 
 <div class="row">
-<span>当前版本</span>
-<span class="right">V1.2</span>
+<span>CEG</span>
+<span class="right">能源 / 核电</span>
 </div>
 
 <div class="row">
-<span>行情模块</span>
-<span class="right yellow">下一步接入</span>
+<span>FCX</span>
+<span class="right">铜资源</span>
+</div>
+
+<div class="row">
+<span>MP</span>
+<span class="right">稀土</span>
+</div>
+
+<div class="row">
+<span>USAR</span>
+<span class="right">稀土战略资源</span>
+</div>
+
+<div class="row">
+<span>NB</span>
+<span class="right">关键矿产</span>
+</div>
+
+<div class="row">
+<span>LTBR</span>
+<span class="right">核燃料</span>
+</div>
+</div>
+
+<div class="card">
+<h2>A股关注</h2>
+
+<div class="row"><span>中国神华</span><span class="right">能源</span></div>
+<div class="row"><span>西部超导</span><span class="right">军工材料</span></div>
+<div class="row"><span>洛阳钼业</span><span class="right">资源</span></div>
+<div class="row"><span>中国铝业</span><span class="right">有色</span></div>
+<div class="row"><span>厦门钨业</span><span class="right">战略金属</span></div>
+<div class="row"><span>三花智控</span><span class="right">制造</span></div>
+<div class="row"><span>军工ETF</span><span class="right">军工</span></div>
+<div class="row"><span>机器人ETF</span><span class="right">机器人</span></div>
+
+</div>
+</div>
+
+
+<div id="market" class="page">
+
+<h1>市场</h1>
+<div class="subtitle">Market Intelligence</div>
+
+<div class="card">
+<h2>宏观风险</h2>
+
+<div class="row"><span>VIX</span><span class="right yellow">等待数据</span></div>
+<div class="row"><span>10Y 美债</span><span class="right yellow">等待数据</span></div>
+<div class="row"><span>HY OAS</span><span class="right yellow">等待数据</span></div>
+<div class="row"><span>SOX</span><span class="right yellow">等待数据</span></div>
+
+</div>
+
+<div class="card">
+<h2>市场主题</h2>
+
+<div class="row"><span>AI</span><span class="right">重点</span></div>
+<div class="row"><span>核能</span><span class="right">重点</span></div>
+<div class="row"><span>稀土 / 关键矿产</span><span class="right">核心</span></div>
+<div class="row"><span>无人机</span><span class="right">重点</span></div>
+<div class="row"><span>Space / Defense</span><span class="right">重点</span></div>
+<div class="row"><span>黄金 / 白银</span><span class="right">避险观察</span></div>
+
+</div>
+
+<div class="card">
+<h2>全球市场</h2>
+<div class="row"><span>美国</span><span class="right">重点</span></div>
+<div class="row"><span>中国 A股</span><span class="right">持仓跟踪</span></div>
+<div class="row"><span>韩国 KOSPI</span><span class="right">趋势跟踪</span></div>
+</div>
+
+</div>
+
+
+<div id="actions" class="page">
+
+<h1>操作</h1>
+<div class="subtitle">Decision Center</div>
+
+<div class="card">
+<h2>当前优先级</h2>
+
+<div class="action">
+<strong>① SPCX</strong>
+<div class="small muted" style="margin-top:7px">
+合理价格出现后优先级最高
+</div>
+</div>
+
+<div class="action">
+<strong>② AVEX</strong>
+<div class="small muted" style="margin-top:7px">
+无人机 / 太空方向重点跟踪
+</div>
+</div>
+
+<div class="action">
+<strong>③ RDW</strong>
+<div class="small muted" style="margin-top:7px">
+等待估值和价格机会
+</div>
+</div>
+
+</div>
+
+<div class="card">
+<h2>交易原则</h2>
+
+<div class="row">
+<span>自动下单</span>
+<span class="right red">关闭</span>
+</div>
+
+<div class="row">
+<span>系统职责</span>
+<span class="right">监控 + 判断</span>
+</div>
+
+<div class="row">
+<span>最终交易</span>
+<span class="right green">本人确认</span>
+</div>
+
+</div>
+
+<div class="notice">
+Investment OS 不执行自动交易。系统用于行情监控、风险判断、持仓管理、资金管理和交易建议，最终交易由本人确认并手动执行。
+</div>
+
+</div>
+
+
+<div id="settings" class="page">
+
+<h1>设置</h1>
+<div class="subtitle">System Settings</div>
+
+<div class="card">
+<h2>系统</h2>
+
+<div class="row">
+<span>版本</span>
+<span class="right">V1.3</span>
+</div>
+
+<div class="row">
+<span>GitHub Pages</span>
+<span class="right green">ONLINE</span>
 </div>
 
 <div class="row">
@@ -215,9 +423,40 @@ h1{
 <span class="right muted">关闭</span>
 </div>
 
-<div class="small muted" style="margin-top:14px;line-height:1.6">
-Investment OS 用于行情监控、风险判断、持仓管理和交易决策辅助。
-最终交易由本人确认并手动执行。
+</div>
+
+<div class="card">
+<h2>实时行情</h2>
+
+<div class="notice">
+V1.3 已预留实时行情接口。下一步接入免费行情数据源后，这里将保存行情设置，并由系统自动刷新价格。
+</div>
+
+<div style="margin-top:14px">
+<label class="small muted">行情 API Key（下一步使用）</label>
+<input id="apikey" type="password" placeholder="暂时不用填写">
+</div>
+
+<div style="margin-top:14px">
+<button onclick="saveSettings()">保存设置</button>
+</div>
+
+<div id="saveMsg" class="small green" style="margin-top:12px"></div>
+
+</div>
+
+<div class="card">
+<h2>数据更新</h2>
+
+<div class="row">
+<span>最后刷新</span>
+<span id="updateTime" class="right">--</span>
+</div>
+
+<div style="margin-top:14px">
+<button class="secondary" onclick="refreshSystem()">刷新系统</button>
+</div>
+
 </div>
 
 </div>
@@ -226,12 +465,55 @@ Investment OS 用于行情监控、风险判断、持仓管理和交易决策辅
 
 
 <div class="nav">
-<div class="active">总览</div>
-<div>持仓</div>
-<div>市场</div>
-<div>操作</div>
-<div>设置</div>
+<div class="active" onclick="showPage('overview',this)">总览</div>
+<div onclick="showPage('holdings',this)">持仓</div>
+<div onclick="showPage('market',this)">市场</div>
+<div onclick="showPage('actions',this)">操作</div>
+<div onclick="showPage('settings',this)">设置</div>
 </div>
+
+
+<script>
+
+function showPage(id,el){
+ document.querySelectorAll('.page').forEach(function(p){
+   p.classList.remove('active');
+ });
+ document.getElementById(id).classList.add('active');
+
+ document.querySelectorAll('.nav div').forEach(function(n){
+   n.classList.remove('active');
+ });
+ el.classList.add('active');
+
+ window.scrollTo(0,0);
+}
+
+function refreshSystem(){
+ const now=new Date();
+ document.getElementById('updateTime').innerText=
+   now.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
+}
+
+function saveSettings(){
+ const key=document.getElementById('apikey').value;
+ if(key){
+   localStorage.setItem('investmentOS_apiKey',key);
+   document.getElementById('saveMsg').innerText='✓ 已保存在本机';
+ }else{
+   document.getElementById('saveMsg').innerText='目前无需填写 API Key';
+ }
+}
+
+window.addEventListener('load',function(){
+ const saved=localStorage.getItem('investmentOS_apiKey');
+ if(saved){
+   document.getElementById('apikey').value=saved;
+ }
+ refreshSystem();
+});
+
+</script>
 
 </body>
 </html>
