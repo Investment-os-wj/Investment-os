@@ -855,6 +855,176 @@ window.addEventListener(
 );
 
 /* ===== V1.5 END ===== */
+ /* ===== Investment OS V1.6 · API诊断与限速 ===== */
+
+async function getLiveQuoteV16(symbol){
+
+  const apiKey =
+    localStorage.getItem('investmentOS_apiKey');
+
+  if(!apiKey){
+    throw new Error('未找到 API Key');
+  }
+
+  const url =
+    'https://api.twelvedata.com/quote?symbol=' +
+    encodeURIComponent(symbol) +
+    '&apikey=' +
+    encodeURIComponent(apiKey);
+
+  let response;
+
+  try{
+    response = await fetch(url);
+  }catch(e){
+    throw new Error('网络连接失败');
+  }
+
+  let data;
+
+  try{
+    data = await response.json();
+  }catch(e){
+    throw new Error('服务器返回异常');
+  }
+
+  if(data.status === 'error'){
+    throw new Error(
+      data.message || 'Twelve Data API 错误'
+    );
+  }
+
+  if(!data.close){
+    throw new Error('没有返回价格');
+  }
+
+  return {
+    symbol: symbol,
+    price: Number(data.close),
+    change: Number(data.change || 0),
+    percent: Number(data.percent_change || 0)
+  };
+}
+
+
+function waitV16(ms){
+  return new Promise(
+    resolve => setTimeout(resolve,ms)
+  );
+}
+
+
+refreshLiveQuotes = async function(){
+
+  const status =
+    document.getElementById('liveMarketStatus');
+
+  if(status){
+    status.innerText =
+      '正在逐只读取行情，请稍候…';
+  }
+
+  let successCount = 0;
+  let failCount = 0;
+
+  for(const symbol of LIVE_SYMBOLS){
+
+    const target =
+      document.getElementById(
+        'quote_' + symbol
+      );
+
+    if(target){
+      target.innerText = '读取中…';
+      target.className = 'right yellow';
+    }
+
+    try{
+
+      const q =
+        await getLiveQuoteV16(symbol);
+
+      successCount++;
+
+      const sign =
+        q.percent > 0 ? '+' : '';
+
+      if(target){
+
+        target.innerText =
+          '$' +
+          q.price.toFixed(2) +
+          '  ' +
+          sign +
+          q.percent.toFixed(2) +
+          '%';
+
+        if(q.percent > 0){
+          target.className =
+            'right green';
+        }else if(q.percent < 0){
+          target.className =
+            'right red';
+        }else{
+          target.className =
+            'right muted';
+        }
+      }
+
+      updateBuySignal(
+        symbol,
+        q.price
+      );
+
+    }catch(error){
+
+      failCount++;
+
+      if(target){
+
+        let msg =
+          error.message ||
+          '获取失败';
+
+        if(msg.length > 32){
+          msg =
+            msg.substring(0,32) + '…';
+        }
+
+        target.innerText = msg;
+        target.className =
+          'right red';
+      }
+    }
+
+    /* 免费API保护：逐只请求 */
+    await waitV16(1500);
+  }
+
+
+  if(status){
+
+    const now =
+      new Date().toLocaleTimeString(
+        'zh-CN',
+        {
+          hour:'2-digit',
+          minute:'2-digit',
+          second:'2-digit'
+        }
+      );
+
+    status.innerText =
+      '成功 ' +
+      successCount +
+      '/5 · 失败 ' +
+      failCount +
+      '/5 · ' +
+      now;
+  }
+}
+
+/* ===== V1.6 END ===== */
 </script>
 
 </body>
