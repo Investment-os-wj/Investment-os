@@ -513,6 +513,191 @@ window.addEventListener('load',function(){
  refreshSystem();
 });
 
+/* ===== Investment OS V1.4 · Twelve Data 实时行情 ===== */
+
+const LIVE_SYMBOLS = ['SPCX','AVEX','RDW','USAR','MP'];
+
+async function getLiveQuote(symbol){
+  const apiKey = localStorage.getItem('investmentOS_apiKey');
+
+  if(!apiKey){
+    throw new Error('请先在“设置”中保存 Twelve Data API Key');
+  }
+
+  const url =
+    'https://api.twelvedata.com/quote?symbol=' +
+    encodeURIComponent(symbol) +
+    '&apikey=' +
+    encodeURIComponent(apiKey);
+
+  const response = await fetch(url);
+
+  if(!response.ok){
+    throw new Error('网络请求失败');
+  }
+
+  const data = await response.json();
+
+  if(data.status === 'error' || !data.close){
+    throw new Error(data.message || '暂无行情');
+  }
+
+  return {
+    symbol: symbol,
+    price: Number(data.close),
+    change: Number(data.change || 0),
+    percent: Number(data.percent_change || 0)
+  };
+}
+
+
+function createLiveMarketPanel(){
+
+  if(document.getElementById('liveMarketPanel')){
+    return;
+  }
+
+  const panel = document.createElement('div');
+  panel.id = 'liveMarketPanel';
+  panel.className = 'card';
+
+  panel.innerHTML = `
+    <h2>实时行情</h2>
+
+    <div class="small muted" style="margin-bottom:12px;">
+      Twelve Data · 手动刷新
+    </div>
+
+    <div id="liveQuoteRows">
+      ${LIVE_SYMBOLS.map(symbol => `
+        <div class="row">
+          <span>${symbol}</span>
+          <span class="right" id="quote_${symbol}">
+            待刷新
+          </span>
+        </div>
+      `).join('')}
+    </div>
+
+    <button
+      onclick="refreshLiveQuotes()"
+      style="
+        width:100%;
+        margin-top:16px;
+        padding:14px;
+        border:0;
+        border-radius:12px;
+        font-size:16px;
+        font-weight:600;
+        background:#ffd166;
+        color:#0b1020;
+      ">
+      刷新实时行情
+    </button>
+
+    <div
+      id="liveMarketStatus"
+      class="small muted"
+      style="margin-top:12px;">
+      点击按钮获取最新行情
+    </div>
+  `;
+
+  const container = document.querySelector('.container');
+
+  if(container){
+    container.appendChild(panel);
+  }
+}
+
+
+async function refreshLiveQuotes(){
+
+  const status =
+    document.getElementById('liveMarketStatus');
+
+  if(status){
+    status.innerText = '正在获取行情…';
+  }
+
+  for(const symbol of LIVE_SYMBOLS){
+
+    const target =
+      document.getElementById('quote_' + symbol);
+
+    if(target){
+      target.innerText = '读取中…';
+      target.className = 'right yellow';
+    }
+
+    try{
+
+      const q = await getLiveQuote(symbol);
+
+      const sign =
+        q.percent > 0 ? '+' : '';
+
+      if(target){
+
+        target.innerText =
+          '$' +
+          q.price.toFixed(2) +
+          '  ' +
+          sign +
+          q.percent.toFixed(2) +
+          '%';
+
+        if(q.percent > 0){
+          target.className = 'right green';
+        }else if(q.percent < 0){
+          target.className = 'right red';
+        }else{
+          target.className = 'right muted';
+        }
+      }
+
+    }catch(error){
+
+      if(target){
+        target.innerText = '获取失败';
+        target.className = 'right red';
+      }
+
+      console.log(
+        symbol,
+        error.message
+      );
+    }
+  }
+
+  if(status){
+
+    const now = new Date();
+
+    status.innerText =
+      '最后更新：' +
+      now.toLocaleTimeString(
+        'zh-CN',
+        {
+          hour:'2-digit',
+          minute:'2-digit',
+          second:'2-digit'
+        }
+      );
+  }
+}
+
+
+window.addEventListener(
+  'load',
+  function(){
+
+    createLiveMarketPanel();
+
+  }
+);
+
+/* ===== V1.4 END ===== */
 </script>
 
 </body>
