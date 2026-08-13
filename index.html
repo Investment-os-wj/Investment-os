@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -14,53 +14,64 @@ body{
   margin:0;
   background:#0b1020;
   color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 .container{
   max-width:600px;
   margin:auto;
-  padding:28px 18px 100px;
+  padding:28px 20px 110px;
 }
-h1{font-size:30px;margin-bottom:4px}
-.sub{color:#8e9bb5;margin-bottom:28px}
-
+h1{
+  font-size:32px;
+  margin:20px 0 4px;
+}
+.subtitle{
+  color:#8d96ad;
+  font-size:16px;
+  margin-bottom:28px;
+}
 .card{
-  background:#151c31;
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:14px;
+  background:#151b30;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:16px;
 }
 .card h2{
-  margin:0 0 12px;
-  font-size:17px;
+  margin:0 0 16px;
+  font-size:20px;
 }
 .row{
   display:flex;
   justify-content:space-between;
-  padding:9px 0;
-  border-bottom:1px solid #26304a;
+  align-items:center;
+  padding:13px 0;
+  border-bottom:1px solid #2a324c;
 }
-.row:last-child{border:0}
-
-.green{color:#40d98b}
+.row:last-child{border-bottom:none}
+.right{
+  font-weight:600;
+  text-align:right;
+}
+.green{color:#66d895}
 .yellow{color:#ffd166}
-.red{color:#ff6b6b}
+.red{color:#ff7070}
+.muted{color:#929bb1}
+.small{font-size:13px}
 
 .nav{
   position:fixed;
-  bottom:0;
   left:0;
   right:0;
-  background:#10172a;
-  padding:14px 8px calc(14px + env(safe-area-inset-bottom));
+  bottom:0;
+  background:#10162a;
+  border-top:1px solid #28304a;
   display:flex;
   justify-content:space-around;
-  border-top:1px solid #26304a;
-}
-.nav span{
-  color:#aab4ca;
+  padding:13px 4px calc(13px + env(safe-area-inset-bottom));
+  color:#8e97ad;
   font-size:13px;
 }
+.nav .active{color:#fff}
 </style>
 </head>
 
@@ -69,45 +80,157 @@ h1{font-size:30px;margin-bottom:4px}
 <div class="container">
 
 <h1>Investment OS</h1>
-<div class="sub">Personal Investment Command Center · V1.1</div>
+<div class="subtitle">Personal Investment Command Center · V1.2</div>
 
 <div class="card">
 <h2>今日状态</h2>
-<div class="row"><span>市场风险</span><b class="yellow">● 中性</b></div>
-<div class="row"><span>现金策略</span><b>保持机动</b></div>
-<div class="row"><span>系统状态</span><b class="green">● ONLINE</b></div>
+
+<div class="row">
+<span>市场风险</span>
+<span class="right yellow">● 中性</span>
 </div>
+
+<div class="row">
+<span>现金策略</span>
+<span class="right">保持机动</span>
+</div>
+
+<div class="row">
+<span>系统状态</span>
+<span class="right green">● ONLINE</span>
+</div>
+
+</div>
+
 
 <div class="card">
 <h2>核心关注</h2>
-<div class="row"><span>SPCX</span><b>等待合理买点</b></div>
-<div class="row"><span>AVEX</span><b>重点跟踪</b></div>
-<div class="row"><span>RDW</span><b>观察</b></div>
-<div class="row"><span>USAR</span><b>财报跟踪</b></div>
+
+<div class="row">
+<span>SPCX</span>
+<span class="right">等待合理买点</span>
 </div>
+
+<div class="row">
+<span>AVEX</span>
+<span class="right">重点跟踪</span>
+</div>
+
+<div class="row">
+<span>RDW</span>
+<span class="right">观察</span>
+</div>
+
+<div class="row">
+<span>USAR</span>
+<span class="right">财报跟踪</span>
+</div>
+
+<div class="row">
+<span>MP</span>
+<span class="right">稀土核心</span>
+</div>
+
+</div>
+
 
 <div class="card">
 <h2>风险仪表盘</h2>
-<div class="row"><span>VIX</span><b class="yellow">● 待接实时数据</b></div>
-<div class="row"><span>美债收益率</span><b class="yellow">● 待接实时数据</b></div>
-<div class="row"><span>信用利差</span><b class="yellow">● 待接实时数据</b></div>
+
+<div class="row">
+<span>VIX</span>
+<span class="right yellow">● 待接实时数据</span>
 </div>
+
+<div class="row">
+<span>美债收益率</span>
+<span class="right yellow">● 待接实时数据</span>
+</div>
+
+<div class="row">
+<span>HY OAS</span>
+<span class="right yellow">● 待接实时数据</span>
+</div>
+
+<div class="row">
+<span>SOX</span>
+<span class="right yellow">● 待接实时数据</span>
+</div>
+
+</div>
+
 
 <div class="card">
-<h2>资产监控</h2>
-<div class="row"><span>黄金 / 白银</span><b>监控</b></div>
-<div class="row"><span>BTC / ETH / UNI</span><b>监控</b></div>
-<div class="row"><span>A股</span><b>监控</b></div>
+<h2>贵金属</h2>
+
+<div class="row">
+<span>黄金</span>
+<span class="right">趋势判断待更新</span>
+</div>
+
+<div class="row">
+<span>白银</span>
+<span class="right">趋势判断待更新</span>
 </div>
 
 </div>
+
+
+<div class="card">
+<h2>Crypto</h2>
+
+<div class="row">
+<span>BTC</span>
+<span class="right">成本约 $100,000</span>
+</div>
+
+<div class="row">
+<span>ETH</span>
+<span class="right">成本约 $3,100</span>
+</div>
+
+<div class="row">
+<span>UNI</span>
+<span class="right">成本约 $12</span>
+</div>
+
+</div>
+
+
+<div class="card">
+<h2>系统说明</h2>
+
+<div class="row">
+<span>当前版本</span>
+<span class="right">V1.2</span>
+</div>
+
+<div class="row">
+<span>行情模块</span>
+<span class="right yellow">下一步接入</span>
+</div>
+
+<div class="row">
+<span>自动交易</span>
+<span class="right muted">关闭</span>
+</div>
+
+<div class="small muted" style="margin-top:14px;line-height:1.6">
+Investment OS 用于行情监控、风险判断、持仓管理和交易决策辅助。
+最终交易由本人确认并手动执行。
+</div>
+
+</div>
+
+</div>
+
 
 <div class="nav">
-<span>总览</span>
-<span>持仓</span>
-<span>市场</span>
-<span>操作</span>
-<span>设置</span>
+<div class="active">总览</div>
+<div>持仓</div>
+<div>市场</div>
+<div>操作</div>
+<div>设置</div>
 </div>
 
 </body>
